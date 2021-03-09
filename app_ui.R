@@ -10,16 +10,45 @@ library(plotly)
 source("app_server.R")
 
 #Introduction
-introduction_tab <- tabPanel("Introduction")
+introduction_tab <- tabPanel(
+  "Introduction",
+  p("This is an introduction of our project")
+                             
+)
+
+#define variables
+states <- unique(covid_chart$state)
 
 #Chart 1
-chart1_tab <- tabPanel("Chart 1")
+covid_layout <- sidebarLayout(
+  sidebarPanel(
+    select_country <- selectInput(
+      inputId = "state_covid",
+      label = "Select a state",
+      choices = states,
+      selected = "Alaska"),
+    select_color <- selectInput(
+      inputId = "color",
+      choices = c("coral", "grey", "skyblue", "lightpink", "orange",
+                  "firebrick"),
+      label = "Select a color")
+  ),mainPanel(
+    plotlyOutput(outputId = "chart1")
+  ))
+
+chart1_tab <- tabPanel(
+  "State Covid-19 Cases Graph",
+  titlePanel("Covid-19 Cases for Each State in the U.S."),
+  covid_layout
+)
+
+
 
 #Chart 2
 #Chart 2 color input
 chart2_color_input <- selectInput(
   inputId = "chart2color",
-  label = "Choose a color",
+  label = "Select a color",
   choices = c("Red", "Green", "Yellow", "Purple", "Orange", "Blue", "Black", "Pink")
 )
 
@@ -32,10 +61,9 @@ top_five_states <- by_gdp_count %>%
   arrange(stateGDP) %>%
   mutate(Proportion = stateGDP / sum(stateGDP))
 
-chart2_tab <- tabPanel("Chart 2",
-                       titlePanel("Chart of top 5 countries has the highest GPD proportion"),
+chart2_tab <- tabPanel("State GDP Chart",
+                       titlePanel("Top 5 states with highest GPD proportion"),
                        br(),
-                       p("Below is a pie chart showing 5 countries has the highest GDP proportion in the US."),
                        p("1. ", strong("Illinois")),
                        p("2. ", strong("Florida")),
                        p("3. ", strong("New York")),
@@ -46,7 +74,6 @@ chart2_tab <- tabPanel("Chart 2",
                            chart2_color_input,
                          ),
                          mainPanel(
-                           h2("Pie chart of top 5 highest GDP proportion"),
                            plotlyOutput(outputId = "top5chart")
                          )
                        )
@@ -57,15 +84,19 @@ chart2_tab <- tabPanel("Chart 2",
 chart3_tab <- tabPanel("Chart 3")
 
 #Conclusion
-conclution_tab <- tabPanel("Conclution")
+conclusion_tab <- tabPanel(
+  "Data Analysis",
+  p("This is an summary takeout for our project.")
+
+  )
 
 #Create a UI 
 ui <- navbarPage(
-  "Final Deliverible",
+  "Covid_19 Analysis",
   introduction_tab,
   chart1_tab,
   chart2_tab,
   chart3_tab,
-  conclution_tab
+  conclusion_tab
   
 )
