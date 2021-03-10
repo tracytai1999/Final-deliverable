@@ -34,16 +34,20 @@ server <- function(input, output) {
   
   
 #Chart 2
-  output$top5chart <- renderPlotly({
-     chart2_color_input <- input$chart2color
+  output$deathchart <- renderPlotly({
+     chart2_state <- input$chart2state
      
-     top_5_chart <-
-       ggplot(data = top_five_states) + 
-         geom_point(mapping = aes(x = State, y = Proportion),
-                    color = chart2_color_input, size = 10) + 
-         labs(x = "States", y = "Proportion of GDP", title = "Top 5 states with highest Proportion of GDP")
+     death_data <- covid_chart %>%
+       filter(state == chart2_state)
      
-     return(top_5_chart)
+     death_chart <- ggplot(data = death_data) + 
+         geom_col(mapping = aes(x = date, y = deaths),
+                   fill = input$chart2color) + 
+         labs(x = "States GDP", y = "Proportion of GDP", 
+              title = paste0("GDP Proportion of ", chart2_state)) +
+     scale_y_continuous(labels = comma)
+     
+     return(death_chart)
   })
 
 #Chart 3

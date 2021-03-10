@@ -45,7 +45,16 @@ chart1_tab <- tabPanel(
 
 
 #Chart 2
-#Chart 2 color input
+#Chart 2 color input and state input
+unique_state <- unique(covid_chart$state)
+
+chart2_state_input <- selectInput(
+  inputId = "chart2state",
+  label = "Select a state",
+  choices = unique_state,
+  selected = "Alaska"
+)
+
 chart2_color_input <- selectInput(
   inputId = "chart2color",
   label = "Select a color",
@@ -53,28 +62,17 @@ chart2_color_input <- selectInput(
 )
 
 #Chart 2 analysis
-by_gdp_count <- gdp_chart %>%
-  select(State, stateGDP)
 
-top_five_states <- by_gdp_count %>%
-  top_n(5) %>%
-  arrange(stateGDP) %>%
-  mutate(Proportion = stateGDP / sum(stateGDP))
-
-chart2_tab <- tabPanel("State GDP Chart",
-                       titlePanel("Top 5 states with highest GPD proportion"),
-                       br(),
-                       p("1. ", strong("Illinois")),
-                       p("2. ", strong("Florida")),
-                       p("3. ", strong("New York")),
-                       p("4. ", strong("Texas")),
-                       p("5. ", strong("California")),
+chart2_tab <- tabPanel("State deaths chart",
+                       titlePanel("States with GPD proportion"),
+                       p("You can interact by choosing state and color."),
                        sidebarLayout(
                          sidebarPanel(
+                           chart2_state_input,
                            chart2_color_input,
                          ),
                          mainPanel(
-                           plotlyOutput(outputId = "top5chart")
+                           plotlyOutput(outputId = "deathchart")
                          )
                        )
                        

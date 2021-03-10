@@ -1,6 +1,5 @@
 # load necessary packages
 library(shiny)
-library(lintr)
 
 # load sources
 source("app_ui.R")
