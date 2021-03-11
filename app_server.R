@@ -12,9 +12,25 @@ library(scales)
 gdp_chart <- read.csv("https://raw.githubusercontent.com/tracytai1999/Exploratory-Analysis/main/Exploratory%20Analysis/GDP.csv")
 covid_chart <- read.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 
+#create variables
+filtered_covid <- covid_chart %>%
+  filter(date == max(date)) %>%
+  group_by(date, state) %>%
+  summarise(cases = sum(cases, na.rm = T))
+
 #Create a server for 3 charts
 server <- function(input, output) {
 
+#graph
+  output$table <- renderTable({
+    
+    top_ten_covid <- filtered_covid[order(filtered_covid$cases), ] %>%
+      top_n(10) %>%
+      arrange(cases) %>%
+      mutate(state = factor(state, state))
+    
+  })
+  
 #Chart 1
     output$chart1 <- renderPlotly({
       
@@ -43,8 +59,8 @@ server <- function(input, output) {
      death_chart <- ggplot(data = death_data) + 
          geom_col(mapping = aes(x = date, y = deaths),
                    fill = input$chart2color) + 
-         labs(x = "States GDP", y = "Proportion of GDP", 
-              title = paste0("GDP Proportion of ", chart2_state)) +
+         labs(x = "Date", y = "Covid-19 Deaths", 
+              title = paste0(chart2_state, "Covid-19 Deaths Graph")) +
      scale_y_continuous(labels = comma)
      
      return(death_chart)
