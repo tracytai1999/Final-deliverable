@@ -98,7 +98,30 @@ chart2_tab <- tabPanel("State Covid-19 Deaths Graph",
 )
 
 #Chart 3
-chart3_tab <- tabPanel("Chart 3")
+state19 <- unique(covid_shapefile$State)
+state_input <- selectInput(
+  inputId = "selectstate",
+  label = "Choose a state",
+  choices = state19,
+  selected = ""
+)
+ourColors <- c("red", "blue", "green", "cyan", "yellow", "orange", "black", "gray", "purple" )
+colorblindfriendly <- c("#000000","#004949","#009292","#FF6DB6","#FFB6DB",
+                        "#490092","#006DDB","#B66DFF","#6DB6FF","#B6DBFF",
+                        "#920000","#924900","#DB6D00","#24FF24","#FFFF6D")
+chart3_tab <- tabPanel("US COVID-19 Map",
+                       p("Hover your cursor over the state to see the death toll"),
+                       sidebarLayout(
+                         sidebarPanel(
+                           state_input,
+                           selectInput("lowColor", "Regular Colors", ourColors, selected = "blue"),
+                           selectInput("colorb", "Colorblind Friendly Colors", colorblindfriendly, selected = "000000"),
+                         ),
+                         mainPanel(
+                           plotlyOutput(outputId = "chart3")
+                         )
+                       )
+)
 
 #Conclusion
 conclusion_tab <- tabPanel(

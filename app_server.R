@@ -67,4 +67,27 @@ server <- function(input, output) {
   })
 
 #Chart 3
+  shapefile <- map_data('state')
+  shapefile <- rename(shapefile, State = region)
+  #load data for chart 3
+  COVID19_state <- read_csv("https://raw.githubusercontent.com/tracytai1999/Final-deliverable/main/COVID19_state.csv")
+  COVID19_state <- select(COVID19_state, State, Tested, Infected, Deaths)
+  COVID19_state$State <- tolower(COVID19_state$State)
+  covid_shapefile <- right_join(shapefile, COVID19_state, by = 'State')
+  6:38
+  #Chart 3
+  output$chart3 <- renderPlotly({
+    chosenstate <- input$selectstate
+    mapdata <- covid_shapefile %>%
+      filter(State == chosenstate)
+    covidmap <- ggplot(data = mapdata) +
+      geom_polygon(
+        mapping = aes(x = long, y = lat, group = group, fill = Deaths)) +
+      labs(title = paste0("Number of COVID-19 Deaths in ", input$selectstate),
+           x = "", y = "") +
+      scale_fill_gradient(low=input$lowColor, high = input$colorb) +
+      guides(fill=FALSE) +
+      theme_void() +
+      theme_void()
+  })
 }
