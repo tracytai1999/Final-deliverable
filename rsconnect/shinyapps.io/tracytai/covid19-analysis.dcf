@@ -5,8 +5,8 @@ account: tracytai
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3797859
-bundleId: 4356820
+bundleId: 4356885
 url: https://tracytai.shinyapps.io/covid19-analysis/
-when: 1615960939.01888
+when: 1615962035.62947
 asMultiple: FALSE
 asStatic: FALSE

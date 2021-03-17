@@ -36,11 +36,9 @@ server <- function(input, output) {
 #graph
   output$table <- renderTable({
 
-    top_ten_covid <- filtered_covid[order(filtered_covid$cases), ] %>%
-      top_n(10) %>%
-      arrange(cases) %>%
-      mutate(state = factor(state, state))
-
+    top_ten_covid <- filtered_covid %>%
+      arrange(-cases) %>%
+      top_n(10)
   })
 
 #Chart 1
