@@ -6,17 +6,18 @@ library(countrycode)
 library(ggplot2)
 library(plotly)
 
+
 #Connect the server to UI
 source("app_server.R")
 
 #Introduction
 introduction_tab <- tabPanel(
   "Introduction",
-  img(src = 'covidimage.png', height = '350px', width = '1300px', align =
+  img(src = "covidimage.png", height = "350px", width = "1300px", align =
         "center"),
   h2("Introduction for Covid-19 Analysis"),
-  p(" As one of the biggest pandemics entered the world named Covid-19, everyone 
-    has been affected by this in someway. Whether it be their health, their 
+  p("As one of the biggest pandemics entered the world named Covid-19, everyone
+    has been affected by this in someway. Whether it be their health, their
     families or their jobs. This pandemic has caused people to work from their
     home to stay safe and healthy becuase Covid-19 is very quick and contagious.
     resturants, malls, and movies have been closed for this cause, and a lot
@@ -31,7 +32,7 @@ introduction_tab <- tabPanel(
   p(" We will use our data set to explore different trends existing for each
     state, and provide a information source for people who want to explore
     more on effects created by Covid-19. ")
-          
+
 )
 
 #define variables
@@ -50,7 +51,7 @@ covid_layout <- sidebarLayout(
       choices = c("coral", "grey", "skyblue", "lightpink", "orange",
                   "firebrick"),
       label = "Select a color")
-  ),mainPanel(
+  ), mainPanel(
     plotlyOutput(outputId = "chart1")
   ))
 
@@ -77,7 +78,8 @@ chart2_state_input <- selectInput(
 chart2_color_input <- selectInput(
   inputId = "chart2color",
   label = "Select a color",
-  choices = c("Red", "Green", "Yellow", "Purple", "Orange", "Blue", "Black", "Pink")
+  choices = c("Red", "Green", "Yellow", "Purple",
+              "Orange", "Blue", "Black", "Pink")
 )
 
 #Chart 2 analysis
@@ -94,29 +96,33 @@ chart2_tab <- tabPanel("State Covid-19 Deaths Graph",
                            plotlyOutput(outputId = "deathchart")
                          )
                        )
-                       
 )
 
 #Chart 3
-state19 <- unique(covid_shapefile$State)
+state19 <- unique(shapefile$region)
+
 state_input <- selectInput(
   inputId = "selectstate",
   label = "Choose a state",
   choices = state19,
   selected = ""
 )
-ourColors <- c("red", "blue", "green", "cyan", "yellow", "orange", "black", "gray", "purple" )
-colorblindfriendly <- c("#000000","#004949","#009292","#FF6DB6","#FFB6DB",
-                        "#490092","#006DDB","#B66DFF","#6DB6FF","#B6DBFF",
-                        "#920000","#924900","#DB6D00","#24FF24","#FFFF6D")
+our_colors <- c("red", "blue", "green", "cyan", "yellow",
+               "orange", "black", "gray", "purple")
+colorblindfriendly <- c("#000000", "#004949", "#009292", "#FF6DB6", "#FFB6DB",
+                        "#490092", "#006DDB", "#B66DFF", "#6DB6FF", "#B6DBFF",
+                        "#920000", "#924900", "#DB6D00", "#24FF24", "#FFFF6D")
 chart3_tab <- tabPanel("US COVID-19 Map",
-                       p("Hover your cursor over the state to see the death toll"),
-                       sidebarLayout(
+                  titlePanel("Map for Covid-19 Deaths in Each State"),
+                  p("Hover your cursor over the state to see the death toll"),
+                      sidebarLayout(
                          sidebarPanel(
                            state_input,
-                           selectInput("lowColor", "Regular Colors", ourColors, selected = "blue"),
-                           selectInput("colorb", "Colorblind Friendly Colors", colorblindfriendly, selected = "000000"),
-                         ),
+                           selectInput("lowColor", "Regular Colors",
+                                       our_colors, selected = "blue"),
+                           selectInput("colorb", "Colorblind Friendly Colors",
+                                       colorblindfriendly, selected = "000000"),
+                      ),
                          mainPanel(
                            plotlyOutput(outputId = "chart3")
                          )
@@ -129,11 +135,11 @@ conclusion_tab <- tabPanel(
   h2("Conclusion for Covid-19 Analysis"),
   p(" In conclusion, from the graphs we designed we were able to distinguish
     the differences and simlarities between states. Whether the rates are high
-    or low. We made charts for the states that impacted covid, and showed 
+    or low. We made charts for the states that impacted covid, and showed
     how high it rose. For example in the chart for Alaska, between January 2020
     to Jancuary 2021, the rates rose pretty quickly and it stays consistently
     growing. Any states that viewers are interested in can be found in the
-    graphs we created. We used data visualization to compare the states and 
+    graphs we created. We used data visualization to compare the states and
     show whether the cases and deaths increased or stayed the same, and how it
     impacted people. The increasing trend for most states have been increasing
     sharply during December 2020 and January 2021, and then going back to
@@ -149,11 +155,11 @@ conclusion_tab <- tabPanel(
     people to look at. The increasing trend of these states can be found in
     the interactive graphs we made by choosing the states you are interested in.
     We have created a information website for people to interact and collect
-    information. We hope this website can help people to collect information 
+    information. We hope this website can help people to collect information
     when doing analysis or research on Covid-19. ")
   )
 
-#Create a UI 
+#Create a UI
 ui <- navbarPage(
   "Covid_19 Analysis",
   introduction_tab,
@@ -161,5 +167,4 @@ ui <- navbarPage(
   chart2_tab,
   chart3_tab,
   conclusion_tab
-  
 )
